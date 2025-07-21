@@ -19,7 +19,8 @@ function playGame(rounds) {
   for (i = 1; i <= rounds; i++) {
     playRound(getHumanChoice(), getComputerChoice())
   }
-  console.log(`Human ${humanScore}, computer ${computerScore}.`)
+
+  console.log(finalMessage())
 
   function playRound(humanChoice, computerChoice){
     if (humanChoice == computerChoice) {
@@ -29,10 +30,27 @@ function playGame(rounds) {
     (humanChoice == "scissors" && computerChoice == "paper")) {
       console.log(`Human wins! ${humanChoice} beats ${computerChoice}`)
       humanScore++
-    } else {
+    } else if ((humanChoice == "scissors" && computerChoice == "rock") ||
+    (humanChoice == "rock" && computerChoice == "paper") ||
+    (humanChoice == "paper" && computerChoice == "scissors")) {
       console.log(`Computer wins! ${computerChoice} beats ${humanChoice}`)
       computerScore++
+    } else {
+      console.log("Invalid choice, try again.")
+      playRound(getHumanChoice(), getComputerChoice())
     }
+  }
+
+  function finalMessage() {
+    let message = `Human ${humanScore}, computer ${computerScore}.`
+    if (humanScore > computerScore) {
+      message += "\nWe have a WINNER!"
+    } else if (humanScore < computerScore) {
+      message += "\nWe have a LOOSER!"
+    } else {
+      message += "\nBoring..."
+    }
+    return message
   }
 
 }

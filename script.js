@@ -1,3 +1,6 @@
+let computerScore = 0
+let humanScore = 0
+
 let options = ["rock","paper","scissors"]
 
 function getComputerChoice(){
@@ -5,7 +8,7 @@ function getComputerChoice(){
 }
 
 function getHumanChoice(){
-  return prompt("What's your pick?")
+  return prompt("Enter rock, paper, or scissors:")
 }
 
 console.log("Human choses " + getHumanChoice())

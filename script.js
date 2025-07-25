@@ -1,53 +1,57 @@
-function playGame(rounds) {
-  let options = ["rock", "paper", "scissors"]
+let options = ["rock", "paper", "scissors"]
+let humanScore = 0
+let computerScore = 0
 
-  function getComputerChoice(){
-    return options[Math.floor(Math.random() * 3)]
-  }
+let optionButtons = Array.from(document.querySelectorAll("button"))
 
-  function getHumanChoice(){
-    return prompt("Enter rock, paper, or scissors:")
-  }
-  let computerScore = 0
-  let humanScore = 0
+function onOptionButtonClick(e) { playRound(e.target.value, getComputerChoice()) }
 
-  for (i = 1; i <= rounds; i++) {
-    playRound(getHumanChoice(), getComputerChoice())
-  }
-
-  console.log(finalMessage())
-
-  function playRound(humanChoice, computerChoice){
-    if (humanChoice == computerChoice) {
-      console.log(`It's a draw! ${humanChoice} against ${computerChoice}`)
-    } else if ((humanChoice == "rock" && computerChoice == "scissors") ||
-    (humanChoice == "paper" && computerChoice == "rock") ||
-    (humanChoice == "scissors" && computerChoice == "paper")) {
-      console.log(`Human wins! ${humanChoice} beats ${computerChoice}`)
-      humanScore++
-    } else if ((humanChoice == "scissors" && computerChoice == "rock") ||
-    (humanChoice == "rock" && computerChoice == "paper") ||
-    (humanChoice == "paper" && computerChoice == "scissors")) {
-      console.log(`Computer wins! ${computerChoice} beats ${humanChoice}`)
-      computerScore++
-    } else {
-      console.log("Invalid choice, try again.")
-      playRound(getHumanChoice(), getComputerChoice())
-    }
-  }
-
-  function finalMessage() {
-    let message = `Human ${humanScore}, computer ${computerScore}.`
-    if (humanScore > computerScore) {
-      message += "\nWe have a WINNER!"
-    } else if (humanScore < computerScore) {
-      message += "\nWe have a LOOSER!"
-    } else {
-      message += "\nBoring..."
-    }
-    return message
-  }
-
+for (let i = 0; i < options.length;  i++) {
+  optionButtons[i].addEventListener("click", onOptionButtonClick)
 }
 
-playGame(5)
+let resultP = document.querySelector(".result")
+let humanScoreSpan = document.querySelector(".humanScore span")
+let computerScoreSpan = document.querySelector(".computerScore span")
+
+function getComputerChoice(){
+  return options[Math.floor(Math.random() * 3)]
+}
+
+function playRound(humanChoice, computerChoice){
+  if (humanChoice == computerChoice) {
+    resultP.textContent = `It's a draw! ${humanChoice} against ${computerChoice}`
+  } else if ((humanChoice == "rock" && computerChoice == "scissors") ||
+  (humanChoice == "paper" && computerChoice == "rock") ||
+  (humanChoice == "scissors" && computerChoice == "paper")) {
+    resultP.textContent = `Human wins! ${humanChoice} beats ${computerChoice}`
+    humanScore++
+    humanScoreSpan.textContent = humanScore
+  } else {
+    resultP.textContent = `Computer wins! ${computerChoice} beats ${humanChoice}`
+    computerScore++
+    computerScoreSpan.textContent = computerScore
+  }
+  console.log(humanScore + " " + computerScore)
+  checkForWinner()
+}
+
+function checkForWinner() {
+  if (humanScore == 5 || computerScore == 5) {
+    console.log("yep 5!")
+    for (let btn of optionButtons) {
+      btn.removeEventListener("click", onOptionButtonClick)
+    }
+    finalMessage()
+  }
+}
+
+let finalMessageP = document.querySelector(".finalMessage")
+
+function finalMessage() {
+  if (humanScore == 5) {
+    finalMessageP.textContent = "\nWe have a WINNER!"
+  } else {
+    finalMessageP.textContent = "\nWe have a LOOSER!"
+  }
+}
